@@ -1,0 +1,6 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.HSQLDialect
+    generate-ddl: false
+    show-sql: true
+
