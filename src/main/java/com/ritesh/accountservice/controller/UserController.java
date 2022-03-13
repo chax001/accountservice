@@ -19,6 +19,10 @@ import com.ritesh.accountservice.model.Statement;
 import com.ritesh.accountservice.service.UserService;
 import com.ritesh.accountservice.specification.StatementSpecification;
 
+/**
+ * @author rites
+ *
+ */
 @Controller
 public class UserController {
 
