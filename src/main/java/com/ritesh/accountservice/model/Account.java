@@ -1,5 +1,7 @@
 package com.ritesh.accountservice.model;
 
+import java.util.Base64;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,22 +12,35 @@ import javax.persistence.Id;
 public class Account {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long Id;
+	@Column(name = "id")
+	private Long accountId;
 	@Column(name = "account_type")
 	private String accountType;
 	@Column(name = "account_number")
+
 	private String accountNumber;
+
+//	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+//	List<Statement> list;
+
+//	public List<Statement> getList() {
+//		return list;
+//	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+//	public void setList(List<Statement> list) {
+//		this.list = list;
+//	}
 
 	public Account() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public Long getId() {
-		return Id;
-	}
-
-	public void setId(Long id) {
-		Id = id;
 	}
 
 	public String getAccountType() {
@@ -37,7 +52,8 @@ public class Account {
 	}
 
 	public String getAccountNumber() {
-		return accountNumber;
+		return Base64.getEncoder().encodeToString(accountNumber.getBytes());
+		// return accountNumber.replaceAll("\\d", "*");
 	}
 
 	public void setAccountNumber(String accountNumber) {

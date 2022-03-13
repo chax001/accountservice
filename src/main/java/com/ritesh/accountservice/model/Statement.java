@@ -1,26 +1,44 @@
 package com.ritesh.accountservice.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.apache.commons.lang3.StringUtils;
 
 @Entity
 public class Statement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
-	Long id;
+	private Long id;
 	@Column(name = "account_id")
-	Long accountid;
+	private Long accountid;
 	@Column(name = "datefield")
-	String dateField;
+	private String dateField;
 	@Column(name = "amount")
-	String amount;
+	private BigDecimal amount;
+
+	@ManyToOne
+	@JoinColumn(name = "account_id", nullable = true, insertable = false, updatable = false)
+	Account account;
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 
 	public Statement() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public Long getId() {
@@ -40,6 +58,12 @@ public class Statement {
 	}
 
 	public String getDateField() {
+		if (!StringUtils.isEmpty(dateField)) {
+			String[] s = dateField.split("\\.");
+			if (s.length == 3)
+				return s[2] + s[1] + s[0];
+		}
+
 		return dateField;
 	}
 
@@ -47,11 +71,11 @@ public class Statement {
 		this.dateField = dateField;
 	}
 
-	public String getAmount() {
-		return amount;
+	public BigDecimal getAmount() {
+		return amount.stripTrailingZeros();
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 

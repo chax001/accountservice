@@ -1,7 +1,65 @@
-<html>
-<head><title>Home Page</title></head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Account Statement</title>
+</head>
 <body>
-<h1>Hello !</h1>
-<p>Welcome to <span th:text="${appName}">Our App</span></p>
+	<div align="center">
+		<h1>Please enter following information to get statement</h1>
+		
+		<div sec:authorize="isAuthenticated()">
+			Welcome <b><span sec:authentication="name">Username</span></b> &nbsp;
+			<i><span sec:authentication="principal.authorities">Roles</span></i>
+		</div>
+		
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Logout" />
+		</form>
+		
+		<div sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+		<form th:method="get" th:action="@{/admin/getstatementbyid}">
+		<label for="accountid">Account ID:</label><br>
+		<input type="text" th:name="accountid"/><br>
+		<label for="startDate">From Date(YYYYMMDD):</label><br>
+		<input type="text" th:name="startDate"/> <br>
+		<label for="endDate">To Date(YYYYMMDD):</label><br>
+		<input type="text" th:name="endDate"/> <br>
+		<label for="startAmount">From Amount:</label><br>
+		<input type="text" th:name="startAmount"/> <br>
+		<label for="endAmount">To Amount:</label><br>
+		<input type="text" th:name="endAmount"/> <br>
+        <button type="submit" class="btn btn-success">SearchByAdmin</button> 
+		</form>
+		</div>
+		<div sec:authorize="hasAnyAuthority('ROLE_USER')">
+		<form th:action="@{/user/getstatementbyid}">
+		<label for="accountid">Account ID:</label><br>
+		<input type="number" th:name="accountid"/> <br>
+       <button type="submit" class="btn btn-success">SearchByUser</button> 
+		</form>
+		</div>
+		<table border="1" cellpadding="10">
+			<thead>
+				<tr>
+					<th>Account ID</th>
+					<th>Account Type</th>
+					<th>Account Number</th>
+					<th>Transaction Date</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="statement : ${statementList}">
+					<td th:text="${statement.account.accountId}">Account ID</td>
+					<td th:text="${statement.account.accountType}">Account Type</td>
+					<td th:text="${statement.account.accountNumber}">Account Number</td>
+					<td th:text="${statement.dateField}">Transaction Date</td>
+					<td th:text="${statement.amount}">Amount</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>

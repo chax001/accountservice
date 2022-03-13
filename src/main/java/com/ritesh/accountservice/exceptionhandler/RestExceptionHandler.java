@@ -23,4 +23,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, ex.getLocalizedMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST,
 				request);
 	}
+
+	@ExceptionHandler({ Exception.class })
+	public ResponseEntity<Object> handleAllRequest(Exception ex, WebRequest request) {
+		return handleExceptionInternal(ex, ex.getLocalizedMessage(), new HttpHeaders(),
+				HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
 }
