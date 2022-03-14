@@ -9,9 +9,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
+/**
+ * @author rites
+ * 
+ *         this is security config class to configure User authentication and
+ *         authrization
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	/**
+	 * this method creates inMemoryAuthentication for user and admin
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
@@ -19,6 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	// security based on ROLE
+	/**
+	 *
+	 * this mehtod validates user and admin and also configure http session
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();

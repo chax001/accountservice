@@ -2,12 +2,24 @@ package com.ritesh.accountservice.specification;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.ritesh.accountservice.model.Statement;
 
+/**
+ * @author rites
+ *
+ */
 public class StatementSpecification {
 
+	private static final Logger logger = LoggerFactory.getLogger(StatementSpecification.class);
+
+	/**
+	 * @param accountId
+	 * @return
+	 */
 	public static Specification<Statement> getStatementByAccountId(Long accountId) {
 
 		return (statement, query, criteriaBuilder) -> {
@@ -15,6 +27,10 @@ public class StatementSpecification {
 		};
 	}
 
+	/**
+	 * @param startDate
+	 * @return
+	 */
 	public static Specification<Statement> getStatementByStartDate(String startDate) {
 
 		return (statement, query, criteriaBuilder) -> {
@@ -22,6 +38,10 @@ public class StatementSpecification {
 		};
 	}
 
+	/**
+	 * @param endDate
+	 * @return
+	 */
 	public static Specification<Statement> getStatementByEndDate(String endDate) {
 
 		return (statement, query, criteriaBuilder) -> {
@@ -29,6 +49,10 @@ public class StatementSpecification {
 		};
 	}
 
+	/**
+	 * @param startAmount
+	 * @return
+	 */
 	public static Specification<Statement> getStatementByStartAmount(BigDecimal startAmount) {
 
 		return (statement, query, criteriaBuilder) -> {
@@ -36,6 +60,10 @@ public class StatementSpecification {
 		};
 	}
 
+	/**
+	 * @param endAmount
+	 * @return
+	 */
 	public static Specification<Statement> getStatementByEndAmount(BigDecimal endAmount) {
 
 		return (statement, query, criteriaBuilder) -> {
@@ -43,17 +71,40 @@ public class StatementSpecification {
 		};
 	}
 
+	/**
+	 * @param accountid
+	 * @param startAmount
+	 * @param endAmount
+	 * @return
+	 */
 	public static Specification<Statement> buildSpecBySearchCriteria(Long accountid, BigDecimal startAmount,
 			BigDecimal endAmount) {
-
+		boolean flag = false;
 		Specification<Statement> spec = null;
-		if (accountid != null)
+		if (accountid != null) {
+			logger.info("Creating query for accountid " + accountid);
+			flag = true;
 			spec = Specification.where(getStatementByAccountId(accountid));
-
-		if (startAmount != null && endAmount != null) {
-			spec = spec.and(getStatementByStartAmount(startAmount)).and(getStatementByEndAmount(endAmount));
 		}
 
+		if (startAmount != null) {
+			logger.info("Creating query for startAmount " + startAmount);
+			if (flag)
+				spec = spec.and(getStatementByStartAmount(startAmount));
+			else {
+				flag = true;
+				spec = Specification.where(getStatementByStartAmount(startAmount));
+			}
+		}
+		if (endAmount != null) {
+			logger.info("Creating query for endAmount " + endAmount);
+			if (flag)
+				spec = spec.and(getStatementByEndAmount(endAmount));
+			else {
+				flag = true;
+				spec = Specification.where(getStatementByEndAmount(endAmount));
+			}
+		}
 		return spec;
 	}
 

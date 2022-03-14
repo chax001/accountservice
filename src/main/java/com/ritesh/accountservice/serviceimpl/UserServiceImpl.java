@@ -13,6 +13,10 @@ import com.ritesh.accountservice.repository.StatementRepository;
 import com.ritesh.accountservice.service.UserService;
 import com.ritesh.accountservice.specification.StatementSpecification;
 
+/**
+ * @author rites
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -21,26 +25,38 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	StatementRepository statementRepository;
 
+	/**
+	 *
+	 */
 	@Override
-	public List<Account> getAllAccount() {
+	public List<Account> getAllAccount() throws Exception {
 
 		return accountRepository.findAll();
 	}
 
+	/**
+	 *
+	 */
 	@Override
-	public List<Statement> getAllStatements() {
+	public List<Statement> getAllStatements() throws Exception {
 
 		return statementRepository.findAll();
 	}
 
+	/**
+	 *
+	 */
 	@Override
-	public List<Statement> getStatementsByID(Long accountId) {
+	public List<Statement> getStatementsByID(Long accountId) throws Exception {
 
 		return statementRepository.findAll(StatementSpecification.getStatementByAccountId(accountId));
 	}
 
+	/**
+	 *
+	 */
 	@Override
-	public List<Statement> getStatementsBycriteria(Specification<Statement> spec) {
+	public List<Statement> getStatementsBycriteria(Specification<Statement> spec) throws Exception {
 
 		return statementRepository.findAll(spec);
 	}

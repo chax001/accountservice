@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+/**
+ * @author rites
+ *
+ */
 @SpringBootApplication
 @EnableWebSecurity
 public class AccountserviceApplication {
@@ -14,6 +18,9 @@ public class AccountserviceApplication {
 		SpringApplication.run(AccountserviceApplication.class, args);
 	}
 
+	/**
+	 * @return it will return bean of HttpSessionEventPublisher
+	 */
 	@Bean
 	public HttpSessionEventPublisher httpSessionEventPublisher() {
 		return new HttpSessionEventPublisher();

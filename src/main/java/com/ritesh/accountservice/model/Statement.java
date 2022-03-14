@@ -12,6 +12,10 @@ import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * @author rites
+ *
+ */
 @Entity
 public class Statement {
 	@Id

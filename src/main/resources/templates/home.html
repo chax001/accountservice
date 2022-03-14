@@ -30,14 +30,14 @@
 		<input type="text" th:name="startAmount"/> <br>
 		<label for="endAmount">To Amount:</label><br>
 		<input type="text" th:name="endAmount"/> <br>
-        <button type="submit" class="btn btn-success">SearchByAdmin</button> 
+        <button type="submit" class="btn btn-success">SearchStatement</button> 
 		</form>
 		</div>
 		<div sec:authorize="hasAnyAuthority('ROLE_USER')">
 		<form th:action="@{/user/getstatementbyid}">
-		<label for="accountid">Account ID:</label><br>
-		<input type="number" th:name="accountid"/> <br>
-       <button type="submit" class="btn btn-success">SearchByUser</button> 
+		<!-- <label for="accountid">Account ID:</label><br>
+		<input type="number" th:name="accountid"/> <br> -->
+       <button type="submit" class="btn btn-success">SearchStatement</button> 
 		</form>
 		</div>
 		<table border="1" cellpadding="10">
