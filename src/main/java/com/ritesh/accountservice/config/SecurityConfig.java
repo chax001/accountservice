@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").antMatchers("/user/**")
 				.hasAnyAuthority("ROLE_USER").anyRequest().authenticated().and().formLogin().permitAll().and().logout()
-				.permitAll().and().exceptionHandling().accessDeniedPage("/403");
+				.permitAll().and().exceptionHandling().accessDeniedPage("/401");
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		http.sessionManagement().maximumSessions(1).maxSessionsPreventsLogin(true);
 		http.sessionManagement().sessionFixation().migrateSession();
