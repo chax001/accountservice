@@ -2,7 +2,7 @@ package com.ritesh.accountservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * @author rites
@@ -14,7 +14,7 @@ public class HomeController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/")
+	@GetMapping(path = "/")
 	public String homePage(Model model) {
 		model.addAttribute("appName", "Account Service Application");
 		return "home";

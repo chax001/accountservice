@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ritesh.accountservice.exceptionhandler.InvalidRequestException;
@@ -36,7 +36,7 @@ public class UserController {
 	/**
 	 * @return it returns all accounts from DB
 	 */
-	@RequestMapping("/user/allaccountdetails")
+	@GetMapping("/user/allaccountdetails")
 	public List<Account> findAllEmployees() {
 		logger.info("Fetching All account details from DB");
 		return userService.getAllAccount();
@@ -51,7 +51,7 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/user/getstatementbyid")
+	@GetMapping("/user/getstatementbyid")
 	public String findAllStatement(Model model) {
 		logger.info("Fetching statement for user");
 		List<Statement> list = getStatementByRange();
@@ -72,14 +72,13 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/admin/getstatementbyid")
+	@GetMapping("/admin/getstatementbyid")
 	public String findStatement(@RequestParam(required = false) Long accountid,
 			@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate,
 			@RequestParam(required = false) BigDecimal startAmount,
 			@RequestParam(required = false) BigDecimal endAmount, Model model) {
 
-		logger.info("fetching details for account id:{} Startdate: {} EndDate: {} From amount:{} To amount {}",
-				accountid, startDate, endDate, startAmount, endAmount);
+		logger.info("fetching details for account id:{}", accountid);
 
 		validateInputParameter(accountid, startDate, endDate);
 
