@@ -1,17 +1,26 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
 <title>Account Statement</title>
 </head>
+<STYLE type="text/css">
+  H1 { text-align: center}
+  DIV.mypars {text-align: center}
+  th, td { padding: 5px; }
+  table { border-collapse: separate; border-spacing: 5px; }
+  table { border-collapse: collapse; border-spacing: 0; }
+  th, td { vertical-align: top; }
+  table { margin: 0 auto; }
+ </STYLE>
 <body>
-	<div align="center">
+	<div class="mypars">
 		<h1>Please enter following information to get statement</h1>
 		
 		<div sec:authorize="isAuthenticated()">
-			Welcome <b><span sec:authentication="name">Username</span></b> &nbsp;
-			<i><span sec:authentication="principal.authorities">Roles</span></i>
+			Welcome <strong><span sec:authentication="name">Username</span></strong> &nbsp;
+			<em><span sec:authentication="principal.authorities">Roles</span></em>
 		</div>
 		
 		<form th:action="@{/logout}" method="post">
@@ -35,12 +44,11 @@
 		</div>
 		<div sec:authorize="hasAnyAuthority('ROLE_USER')">
 		<form th:action="@{/user/getstatementbyid}">
-		<!-- <label for="accountid">Account ID:</label><br>
-		<input type="number" th:name="accountid"/> <br> -->
        <button type="submit" class="btn btn-success">SearchStatement</button> 
 		</form>
 		</div>
-		<table border="1" cellpadding="10">
+		<table border="1" >
+		<caption>Account Statement Report</caption>
 			<thead>
 				<tr>
 					<th>Account ID</th>

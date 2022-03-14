@@ -41,10 +41,6 @@ public class Statement {
 		this.account = account;
 	}
 
-	public Statement() {
-
-	}
-
 	public Long getId() {
 		return id;
 	}

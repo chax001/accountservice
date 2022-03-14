@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll().and().exceptionHandling().accessDeniedPage("/403");
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		http.sessionManagement().maximumSessions(1).maxSessionsPreventsLogin(true);
-		http.sessionManagement().sessionFixation().none();
+		http.sessionManagement().sessionFixation().migrateSession();
 
 	}
 

@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public List<Account> getAllAccount() throws Exception {
+	public List<Account> getAllAccount() {
 
 		return accountRepository.findAll();
 	}
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public List<Statement> getAllStatements() throws Exception {
+	public List<Statement> getAllStatements() {
 
 		return statementRepository.findAll();
 	}
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public List<Statement> getStatementsByID(Long accountId) throws Exception {
+	public List<Statement> getStatementsByID(Long accountId) {
 
 		return statementRepository.findAll(StatementSpecification.getStatementByAccountId(accountId));
 	}
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	 *
 	 */
 	@Override
-	public List<Statement> getStatementsBycriteria(Specification<Statement> spec) throws Exception {
+	public List<Statement> getStatementsBycriteria(Specification<Statement> spec) {
 
 		return statementRepository.findAll(spec);
 	}

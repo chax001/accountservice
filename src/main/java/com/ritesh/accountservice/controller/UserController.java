@@ -37,7 +37,7 @@ public class UserController {
 	 * @return it returns all accounts from DB
 	 */
 	@RequestMapping("/user/allaccountdetails")
-	public List<Account> findAllEmployees() throws Exception {
+	public List<Account> findAllEmployees() {
 		logger.info("Fetching All account details from DB");
 		return userService.getAllAccount();
 
@@ -52,7 +52,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping("/user/getstatementbyid")
-	public String findAllStatement(Model model) throws Exception {
+	public String findAllStatement(Model model) {
 		logger.info("Fetching statement for user");
 		List<Statement> list = getStatementByRange();
 		model.addAttribute("statementList", list);
@@ -76,10 +76,10 @@ public class UserController {
 	public String findStatement(@RequestParam(required = false) Long accountid,
 			@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate,
 			@RequestParam(required = false) BigDecimal startAmount,
-			@RequestParam(required = false) BigDecimal endAmount, Model model) throws Exception {
+			@RequestParam(required = false) BigDecimal endAmount, Model model) {
 
-		logger.info("fetching details for account id: " + accountid + " Startdate: " + startDate + "EndDate: " + endDate
-				+ "From amount: " + startAmount + "To amount" + endAmount);
+		logger.info("fetching details for account id:{} Startdate: {} EndDate: {} From amount:{} To amount {}",
+				accountid, startDate, endDate, startAmount, endAmount);
 
 		validateInputParameter(accountid, startDate, endDate);
 
@@ -92,28 +92,36 @@ public class UserController {
 		} else {
 			statementList = userService.getAllStatements();
 		}
-		logger.info("StatementList size is " + statementList.size());
+		if (!statementList.isEmpty())
+			logger.info("StatementList size is {}", statementList.size());
+		else
+			logger.info("StatementList size is {}", 0);
+		if (!statementList.isEmpty()) {
+			if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
+				statementList = statementList.stream()
+						.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
+								&& Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
+						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
+						.collect(Collectors.toList());
+			} else if (!StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)) {
 
-		if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
-			statementList = statementList.stream()
-					.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
-							&& Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
-					.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField())).collect(Collectors.toList());
-		} else if (!StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)) {
+				statementList = statementList.stream()
+						.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate))
+						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
+						.collect(Collectors.toList());
+			} else if (StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
 
-			statementList = statementList.stream()
-					.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate))
-					.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField())).collect(Collectors.toList());
-		} else if (StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
-
-			statementList = statementList.stream()
-					.filter(s -> Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
-					.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField())).collect(Collectors.toList());
-		} else if (StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate) && spec == null) {
-			statementList = getStatementByRange();
-		} else {
-			statementList = statementList.stream().sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
-					.collect(Collectors.toList());
+				statementList = statementList.stream()
+						.filter(s -> Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
+						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
+						.collect(Collectors.toList());
+			} else if (StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate) && spec == null) {
+				statementList = getStatementByRange();
+			} else {
+				statementList = statementList.stream()
+						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
+						.collect(Collectors.toList());
+			}
 		}
 		model.addAttribute("statementList", statementList);
 		return "home";
@@ -145,17 +153,20 @@ public class UserController {
 	 * 
 	 * @return list of statements
 	 */
-	private List<Statement> getStatementByRange() throws Exception {
+	private List<Statement> getStatementByRange() {
 		String startDate = LocalDate.now().minusMonths(3).format(DateTimeFormatter.BASIC_ISO_DATE);
 		String endDate = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
-		logger.info("Creating statements for Last three months using from date: " + startDate + "To Date: " + endDate);
+		logger.info("Creating statements for Last three months using from date: {} To Date: {}", startDate, endDate);
 		List<Statement> list = userService.getAllStatements();
-		list = list.stream()
-				.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
-						&& Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
-				.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField())).collect(Collectors.toList());
-		logger.info("Statement size is " + list.size() + " for Last three months using from date: " + startDate
-				+ "To Date: " + endDate);
+		if (!list.isEmpty()) {
+			list = list.stream()
+					.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
+							&& Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
+					.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField())).collect(Collectors.toList());
+
+			logger.info("Statement size is {} for Last three months using from date: {} To Date: {}", list.size(),
+					startDate, endDate);
+		}
 
 		return list;
 	}

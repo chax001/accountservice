@@ -14,6 +14,10 @@ import com.ritesh.accountservice.model.Statement;
  */
 public class StatementSpecification {
 
+	private StatementSpecification() {
+
+	}
+
 	private static final Logger logger = LoggerFactory.getLogger(StatementSpecification.class);
 
 	/**
@@ -82,13 +86,13 @@ public class StatementSpecification {
 		boolean flag = false;
 		Specification<Statement> spec = null;
 		if (accountid != null) {
-			logger.info("Creating query for accountid " + accountid);
+			logger.info("Creating query for accountid {}", accountid);
 			flag = true;
 			spec = Specification.where(getStatementByAccountId(accountid));
 		}
 
 		if (startAmount != null) {
-			logger.info("Creating query for startAmount " + startAmount);
+			logger.info("Creating query for startAmount {}", startAmount);
 			if (flag)
 				spec = spec.and(getStatementByStartAmount(startAmount));
 			else {
@@ -97,13 +101,12 @@ public class StatementSpecification {
 			}
 		}
 		if (endAmount != null) {
-			logger.info("Creating query for endAmount " + endAmount);
+			logger.info("Creating query for endAmount {}", endAmount);
 			if (flag)
 				spec = spec.and(getStatementByEndAmount(endAmount));
-			else {
-				flag = true;
+			else
 				spec = Specification.where(getStatementByEndAmount(endAmount));
-			}
+
 		}
 		return spec;
 	}

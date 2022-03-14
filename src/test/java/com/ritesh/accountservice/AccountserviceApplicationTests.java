@@ -17,21 +17,21 @@ class AccountserviceApplicationTests {
 	private TestRestTemplate template;
 
 	@Test
-	public void whenGetAllStatementthenOK() {
+	void whenGetAllStatementthenOK() {
 		ResponseEntity<?> result = template.withBasicAuth("user", "user").getForEntity("/user/allaccountdetails",
 				String.class);
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 	}
 
 	@Test
-	public void whenFindAllUserStatementthenOK() {
+	void whenFindAllUserStatementthenOK() {
 		ResponseEntity<?> result = template.withBasicAuth("user", "user").getForEntity("/user/getstatementbyid",
 				String.class);
 		assertEquals(HttpStatus.OK, result.getStatusCode());
 	}
 
 	@Test
-	public void whenFindAllAdminStatementthenOK() {
+	void whenFindAllAdminStatementthenOK() {
 		ResponseEntity<?> result = template.withBasicAuth("admin", "admin").getForEntity("/admin/getstatementbyid",
 				String.class);
 		assertEquals(HttpStatus.OK, result.getStatusCode());
