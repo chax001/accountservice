@@ -26,9 +26,8 @@ public class StatementSpecification {
 	 */
 	public static Specification<Statement> getStatementByAccountId(Long accountId) {
 
-		return (statement, query, criteriaBuilder) -> {
-			return criteriaBuilder.equal(statement.get("accountid"), accountId);
-		};
+		return (statement, query, criteriaBuilder) -> criteriaBuilder.equal(statement.get("accountid"), accountId);
+
 	}
 
 	/**
@@ -37,9 +36,9 @@ public class StatementSpecification {
 	 */
 	public static Specification<Statement> getStatementByStartDate(String startDate) {
 
-		return (statement, query, criteriaBuilder) -> {
-			return criteriaBuilder.greaterThanOrEqualTo(statement.get("dateField"), startDate);
-		};
+		return (statement, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(statement.get("dateField"),
+				startDate);
+
 	}
 
 	/**
@@ -48,9 +47,9 @@ public class StatementSpecification {
 	 */
 	public static Specification<Statement> getStatementByEndDate(String endDate) {
 
-		return (statement, query, criteriaBuilder) -> {
-			return criteriaBuilder.lessThanOrEqualTo(statement.get("dateField"), endDate);
-		};
+		return (statement, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(statement.get("dateField"),
+				endDate);
+
 	}
 
 	/**
@@ -59,9 +58,9 @@ public class StatementSpecification {
 	 */
 	public static Specification<Statement> getStatementByStartAmount(BigDecimal startAmount) {
 
-		return (statement, query, criteriaBuilder) -> {
-			return criteriaBuilder.greaterThanOrEqualTo(statement.get("amount"), startAmount);
-		};
+		return (statement, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(statement.get("amount"),
+				startAmount);
+
 	}
 
 	/**
@@ -70,9 +69,9 @@ public class StatementSpecification {
 	 */
 	public static Specification<Statement> getStatementByEndAmount(BigDecimal endAmount) {
 
-		return (statement, query, criteriaBuilder) -> {
-			return criteriaBuilder.lessThanOrEqualTo(statement.get("amount"), endAmount);
-		};
+		return (statement, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(statement.get("amount"),
+				endAmount);
+
 	}
 
 	/**
