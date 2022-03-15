@@ -86,16 +86,12 @@ public class UserController {
 		Specification<Statement> spec = StatementSpecification.buildSpecBySearchCriteria(accountid, startAmount,
 				endAmount);
 
-		if (spec != null) {
+		if (spec != null)
 			statementList = userService.getStatementsBycriteria(spec);
-		} else {
-			statementList = userService.getAllStatements();
-		}
-		if (!statementList.isEmpty())
-			logger.info("StatementList size is {}", statementList.size());
 		else
-			logger.info("StatementList size is {}", 0);
+			statementList = userService.getAllStatements();
 		if (!statementList.isEmpty()) {
+			logger.info("StatementList size is {}", statementList.size());
 			if (!StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
 				statementList = statementList.stream()
 						.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
@@ -121,7 +117,8 @@ public class UserController {
 						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
 						.collect(Collectors.toList());
 			}
-		}
+		} else
+			logger.info("StatementList size is {}", 0);
 		model.addAttribute("statementList", statementList);
 		return "home";
 
