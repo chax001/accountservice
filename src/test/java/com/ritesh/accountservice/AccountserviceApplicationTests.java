@@ -17,10 +17,18 @@ class AccountserviceApplicationTests {
 	private TestRestTemplate template;
 
 	@Test
+	void whenGetAllHomeOK() {
+		ResponseEntity<?> result = template.withBasicAuth("user", "user").getForEntity("/", String.class);
+		assertEquals(HttpStatus.OK, result.getStatusCode());
+
+	}
+
+	@Test
 	void whenGetAllStatementthenOK() {
 		ResponseEntity<?> result = template.withBasicAuth("user", "user").getForEntity("/user/allaccountdetails",
 				String.class);
 		assertEquals(HttpStatus.OK, result.getStatusCode());
+
 	}
 
 	@Test
