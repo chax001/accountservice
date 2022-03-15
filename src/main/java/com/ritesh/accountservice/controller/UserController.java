@@ -37,9 +37,11 @@ public class UserController {
 	 * @return it returns all accounts from DB
 	 */
 	@GetMapping("/user/allaccountdetails")
-	public List<Account> findAllEmployees() {
+	public String findAllEmployees(Model model) {
 		logger.info("Fetching All account details from DB");
-		return userService.getAllAccount();
+		List<Account> list = userService.getAllAccount();
+		model.addAttribute("accountList", list);
+		return "home";
 
 	}
 
