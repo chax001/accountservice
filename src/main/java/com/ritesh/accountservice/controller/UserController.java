@@ -3,6 +3,7 @@ package com.ritesh.accountservice.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,25 +99,21 @@ public class UserController {
 				statementList = statementList.stream()
 						.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
 								&& Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
-						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
-						.collect(Collectors.toList());
+						.sorted(Comparator.comparing(Statement::getDateField)).collect(Collectors.toList());
 			} else if (!StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)) {
 
 				statementList = statementList.stream()
 						.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate))
-						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
-						.collect(Collectors.toList());
+						.sorted(Comparator.comparing(Statement::getDateField)).collect(Collectors.toList());
 			} else if (StringUtils.isEmpty(startDate) && !StringUtils.isEmpty(endDate)) {
 
 				statementList = statementList.stream()
 						.filter(s -> Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
-						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
-						.collect(Collectors.toList());
+						.sorted(Comparator.comparing(Statement::getDateField)).collect(Collectors.toList());
 			} else if (StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate) && spec == null) {
 				statementList = getStatementByRange();
 			} else {
-				statementList = statementList.stream()
-						.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField()))
+				statementList = statementList.stream().sorted(Comparator.comparing(Statement::getDateField))
 						.collect(Collectors.toList());
 			}
 		} else
@@ -160,7 +157,7 @@ public class UserController {
 			list = list.stream()
 					.filter(s -> Integer.parseInt(s.getDateField()) >= Integer.parseInt(startDate)
 							&& Integer.parseInt(s.getDateField()) <= Integer.parseInt(endDate))
-					.sorted((o1, o2) -> o1.getDateField().compareTo(o2.getDateField())).collect(Collectors.toList());
+					.sorted(Comparator.comparing(Statement::getDateField)).collect(Collectors.toList());
 
 			logger.info("Statement size is {} for Last three months using from date: {} To Date: {}", list.size(),
 					startDate, endDate);
